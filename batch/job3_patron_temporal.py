@@ -7,9 +7,7 @@ import sys
 
 class TemporalPatternAnalyzer:
     def __init__(self):
-        print("\n" + "="*80)
         print("JOB 3: ANALISIS DE PATRONES TEMPORALES")
-        print("="*80 + "\n")
         
         self.spark = SparkSession.builder \
             .appName("Job3_TemporalPatternAnalysis") \
@@ -76,9 +74,7 @@ class TemporalPatternAnalyzer:
         return time_df
     
     def analyze_hourly_activity(self, df):
-        print("\n" + "="*80)
         print("ANALISIS 1: ACTIVIDAD POR HORA DEL DIA")
-        print("="*80)
         
         hourly_global = df.groupBy("hour") \
             .agg(
@@ -108,9 +104,7 @@ class TemporalPatternAnalyzer:
         return hourly_global, hourly_by_crypto
     
     def analyze_daily_activity(self, df):
-        print("\n" + "="*80)
         print("ANALISIS 2: ACTIVIDAD POR DIA DE LA SEMANA")
-        print("="*80)
         
         daily_global = df.groupBy("day_of_week") \
             .agg(
@@ -133,9 +127,7 @@ class TemporalPatternAnalyzer:
         return daily_global, daily_by_crypto
     
     def analyze_heatmap_matrix(self, df):
-        print("\n" + "="*80)
         print("ANALISIS 3: MATRIZ DIA x HORA (HEATMAP)")
-        print("="*80)
         
         heatmap_global = df.groupBy("day_of_week", "hour") \
             .agg(
@@ -162,9 +154,7 @@ class TemporalPatternAnalyzer:
         return heatmap_global, heatmap_by_crypto
     
     def analyze_weekend_vs_weekday(self, df):
-        print("\n" + "="*80)
         print("ANALISIS ADICIONAL: FIN DE SEMANA VS DIAS LABORALES")
-        print("="*80)
         
         weekend_df = df.withColumn("is_weekend",
             when(col("day_of_week").isin(["Saturday", "Sunday"]), "Weekend")
@@ -192,9 +182,7 @@ class TemporalPatternAnalyzer:
         return weekend_stats
     
     def generate_summary(self, df):
-        print("\n" + "="*80)
         print("RESUMEN EJECUTIVO TEMPORAL")
-        print("="*80)
         
         summary = df.groupBy("crypto_type") \
             .agg(
@@ -211,9 +199,7 @@ class TemporalPatternAnalyzer:
     
     def save_results(self, hourly_global, hourly_by_crypto, daily_global, daily_by_crypto, 
                     heatmap_global, heatmap_by_crypto, weekend_stats, summary):
-        print("\n" + "="*80)
         print("GUARDANDO RESULTADOS EN S3")
-        print("="*80)
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
@@ -328,4 +314,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
