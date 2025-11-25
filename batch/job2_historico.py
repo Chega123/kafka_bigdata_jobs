@@ -7,9 +7,7 @@ import sys
 
 class BatchHistoricalAnalyzer:
     def __init__(self):
-        print("\n" + "="*80)
         print("JOB 2: ANALISIS HISTORICO BATCH")
-        print("="*80 + "\n")
         
         self.spark = SparkSession.builder \
             .appName("Job2_BatchHistoricalAnalysis") \
@@ -96,9 +94,7 @@ class BatchHistoricalAnalyzer:
         return prepared_df
     
     def analyze_daily_volume(self, df):
-        print("\n" + "="*80)
         print("ANALISIS 1: VOLUMEN DIARIO")
-        print("="*80)
         
         daily_volume = df.groupBy("tweet_date", "crypto_type") \
             .agg(
@@ -122,9 +118,7 @@ class BatchHistoricalAnalyzer:
         return daily_volume
     
     def analyze_top_influencers(self, df):
-        print("\n" + "="*80)
         print("ANALISIS 2: TOP INFLUENCERS")
-        print("="*80)
         
         influencers = df.groupBy("user_name", "crypto_type") \
             .agg(
@@ -146,9 +140,7 @@ class BatchHistoricalAnalyzer:
         return influencers
     
     def analyze_devices_and_bots(self, df):
-        print("\n" + "="*80)
         print("ANALISIS 3: PLATAFORMAS Y BOTS")
-        print("="*80)
         
         bot_condition = lower(col("source")).rlike("|".join([b.lower() for b in self.known_bots]))
         
@@ -188,9 +180,7 @@ class BatchHistoricalAnalyzer:
         return device_stats
     
     def analyze_credibility(self, df):
-        print("\n" + "="*80)
         print("ANALISIS 4: CREDIBILIDAD CUENTAS VERIFICADAS")
-        print("="*80)
         
         verified_stats = df.groupBy("crypto_type", "user_verified") \
             .agg(
@@ -226,9 +216,7 @@ class BatchHistoricalAnalyzer:
         return verified_stats
     
     def generate_summary(self, df):
-        print("\n" + "="*80)
         print("RESUMEN EJECUTIVO")
-        print("="*80)
         
         summary = df.groupBy("crypto_type") \
             .agg(
@@ -246,9 +234,7 @@ class BatchHistoricalAnalyzer:
         return summary
     
     def save_results(self, daily_volume, influencers, device_stats, verified_stats, summary):
-        print("\n" + "="*80)
         print("GUARDANDO RESULTADOS EN S3")
-        print("="*80)
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
@@ -348,4 +334,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
